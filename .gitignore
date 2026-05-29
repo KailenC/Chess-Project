@@ -1,0 +1,33 @@
+# =========================
+# CHESS PROJECT CLEAN IGNORE
+# =========================
+
+# ---- C++ build output ----
+engine/build/
+*.exe
+*.o
+*.obj
+*.out
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# ---- VS Code (keep useful config, ignore noise) ----
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ---- Logs / temp ----
+*.log
+*.tmp
