@@ -1,6 +1,21 @@
+#include "../include/board.h"
 #include <iostream>
+#include <string>
 
 int main()
 {
-    std::cout << "Hello World" << std::endl;
+    Board board;
+    // board.PrintBitboard(board.whitePawns);
+
+    std::string input;
+
+    while (std::getline(std::cin, input))
+    {
+        if (input == "hello")
+        {
+            std::cout << "Hey" << std::endl;
+        }
+    }
+
+    return 0;
 }

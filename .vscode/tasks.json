@@ -6,10 +6,12 @@
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${workspaceFolder}\\engine\\build\\engine.exe"
+    "-g",
+    "${workspaceFolder}\\engine\\src\\main.cpp",
+    "${workspaceFolder}\\engine\\src\\board.cpp",
+    "-I${workspaceFolder}\\engine\\include",
+    "-o",
+    "${workspaceFolder}\\engine\\build\\engine.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
