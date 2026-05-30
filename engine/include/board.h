@@ -14,6 +14,7 @@ class Board
 {
 public:
     void PrintBitboard(U64 bb);
+    U64 MaskPawnAttacks(int square, int side);
 
     // clang-format off
 
