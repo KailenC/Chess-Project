@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel  # type: ignore
-from PyQt6.QtGui import QPainter, QColor, QPixmap  # type: ignore
+from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtGui import QPainter, QColor, QPixmap
 import subprocess
 import sys
 

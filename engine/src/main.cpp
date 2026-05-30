@@ -5,15 +5,30 @@
 int main()
 {
     Board board;
-    // board.PrintBitboard(board.whitePawns);
 
+    board.whitePawns >> 1;
+
+    U64 bitboard = 0ULL;
+    set_bit(bitboard, board.e2);
+    board.PrintBitboard(bitboard);
+
+    pop_bit(bitboard, board.e2);
+    board.PrintBitboard(bitboard);
+
+    pop_bit(bitboard, board.e2);
+    board.PrintBitboard(bitboard);
+
+    bool doInterface = false;
     std::string input;
 
-    while (std::getline(std::cin, input))
+    if (doInterface)
     {
-        if (input == "hello")
+        while (std::getline(std::cin, input))
         {
-            std::cout << "Hey" << std::endl;
+            if (input == "hello")
+            {
+                std::cout << "Hey" << std::endl;
+            }
         }
     }
 
