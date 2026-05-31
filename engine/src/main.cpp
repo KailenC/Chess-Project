@@ -6,18 +6,14 @@ int main()
 {
     Board board;
 
-    board.whitePawns >> 1;
+    board.InitJumperAttacks();
+    board.InitMagics();
 
-    U64 bitboard = 0ULL;
-    set_bit(bitboard, board.e2);
-    board.PrintBitboard(bitboard);
+    board.PrintBitboard(board.AllOccupancy());
+    board.PrintBitboard(board.Occupany(board.white));
+    board.PrintBitboard(board.Occupany(board.black));
 
-    pop_bit(bitboard, board.e2);
-    board.PrintBitboard(bitboard);
-
-    pop_bit(bitboard, board.e2);
-    board.PrintBitboard(bitboard);
-
+    // python interface
     bool doInterface = false;
     std::string input;
 
