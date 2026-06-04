@@ -128,6 +128,7 @@ public:
     U64 Occupany(int side);
     U64 AllOccupancy();
     U64 SetOccupancy(int index, int bitsInMask, U64 attackMask);
+    bool IsSquareAttacked(int square);
 
     // attack masks
     U64 InitRookAttacks(int square, U64 blocker);

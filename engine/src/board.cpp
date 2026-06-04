@@ -353,6 +353,76 @@ U64 Board::SetOccupancy(int index, int bitsInMask, U64 attackMask)
     return occupancy;
 }
 
+bool Board::IsSquareAttacked(int square)
+{
+    U64 pawns = sideToMove == white ? whitePawns : blackPawns;
+    while (pawns)
+    {
+        int src = GetLSBIndex(pawns);
+        pop_bit(pawns, src);
+        if (pawnAttacks[(sideToMove == white) ? black : white][src] & (1ULL << square))
+        {
+            return true;
+        }
+    }
+
+    U64 rooks = sideToMove == white ? whiteRooks : blackRooks;
+    while (rooks)
+    {
+        int src = GetLSBIndex(rooks);
+        pop_bit(rooks, src);
+        if (rookAttacks(AllOccupancy(), src) & (1ULL << square))
+        {
+            return true;
+        }
+    }
+
+    U64 knights = sideToMove == white ? whiteKnights : blackKnights;
+    while (knights)
+    {
+        int src = GetLSBIndex(knights);
+        pop_bit(knights, src);
+        if (knightAttacks[src] & (1ULL << square))
+        {
+            return true;
+        }
+    }
+
+    U64 bishops = sideToMove == white ? whiteBishops : blackBishops;
+    while (bishops)
+    {
+        int src = GetLSBIndex(bishops);
+        pop_bit(bishops, src);
+        if (bishopAttacks(AllOccupancy(), src) & (1ULL << square))
+        {
+            return true;
+        }
+    }
+
+    U64 queens = sideToMove == white ? whiteQueens : blackQueens;
+    while (queens)
+    {
+        int src = GetLSBIndex(queens);
+        pop_bit(queens, src);
+        if ((bishopAttacks(AllOccupancy(), src) | rookAttacks(AllOccupancy(), src)) & (1ULL << square))
+        {
+            return true;
+        }
+    }
+
+    U64 king = sideToMove == white ? whiteKing : blackKing;
+    while (king)
+    {
+        int src = GetLSBIndex(king);
+        pop_bit(king, src);
+        if (kingAttacks[src] & (1ULL << square))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 U64 Board::InitRookAttacks(int square, U64 blocker)
 {
     U64 attacks = 0ULL;
