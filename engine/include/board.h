@@ -48,6 +48,13 @@ enum
     k
 };
 
+struct MoveList
+{
+    int moves[256];
+    int count = 0;
+    void add(unsigned int move) { moves[count++] = move; }
+};
+
 typedef unsigned long long U64;
 
 // clang-format off
@@ -115,6 +122,9 @@ public:
     // functions
     void PrintBitboard(U64 bb);
     void InitJumperAttacks();
+    void GenerateMoves(MoveList& list);
+    void MakeMove(int move);
+    void UnmakeMove(int move);
     U64 Occupany(int side);
     U64 AllOccupancy();
     U64 SetOccupancy(int index, int bitsInMask, U64 attackMask);
@@ -207,4 +217,6 @@ public:
     U64 blackBishops = 0x24ULL;
     U64 blackQueens = 0x8ULL;
     U64 blackKing = 0x10ULL;
+
+    int sideToMove = white;
 };

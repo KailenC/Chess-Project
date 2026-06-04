@@ -1,17 +1,23 @@
 #include "../include/board.h"
+#include "../include/evaluation.h"
+#include "../include/search.h"
 #include <iostream>
 #include <string>
 
 int main()
 {
     Board board;
+    Search search;
+    Evaluation eval;
 
     board.InitJumperAttacks();
     board.InitMagics();
 
-    board.PrintBitboard(board.AllOccupancy());
-    board.PrintBitboard(board.Occupany(board.white));
-    board.PrintBitboard(board.Occupany(board.black));
+    while (true)
+    {
+        search.NegaMax(board, eval, 2, -100000, 10000);
+        board.PrintBitboard(board.AllOccupancy());
+    }
 
     // python interface
     bool doInterface = false;
