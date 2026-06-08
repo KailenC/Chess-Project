@@ -2,6 +2,12 @@
 
 U64 Board::mBishopAttacks[64][512];
 U64 Board::mRookAttacks[64][4096];
+U64 Board::pawnAttacks[2][64];
+U64 Board::knightAttacks[64];
+U64 Board::queenAttacks[64];
+U64 Board::kingAttacks[64];
+SMagic Board::mBishopTbl[64];
+SMagic Board::mRookTbl[64];
 
 void Board::PrintBitboard(U64 bb)
 {
@@ -360,7 +366,7 @@ bool Board::IsSquareAttacked(int square)
     {
         int src = GetLSBIndex(pawns);
         pop_bit(pawns, src);
-        if (pawnAttacks[(sideToMove == white) ? black : white][src] & (1ULL << square))
+        if (pawnAttacks[sideToMove][src] & (1ULL << square))
         {
             return true;
         }

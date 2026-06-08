@@ -2,6 +2,8 @@
 #include <iostream>
 #include <bitset>
 #include <string>
+#include <cstddef>
+#include <sstream>
 
 // board get/set/pop helpers
 #define get_bit(bitboard, square) (bitboard & (1ULL << square))
@@ -48,6 +50,8 @@ enum
     k
 };
 
+typedef unsigned long long U64;
+
 struct MoveList
 {
     int moves[256];
@@ -55,7 +59,11 @@ struct MoveList
     void add(unsigned int move) { moves[count++] = move; }
 };
 
-typedef unsigned long long U64;
+struct SMagic
+{
+    U64 mask;
+    U64 magic;
+};
 
 // clang-format off
 static constexpr U64 bishopMagics[64] = {
@@ -179,29 +187,23 @@ public:
     // clang-format on
 
     // not-file masks
-    const U64 notAFile = 18374403900871474942ULL;
-    const U64 notHFile = 9187201950435737471ULL;
-    const U64 notABFile = 18229723555195321596ULL;
-    const U64 notHGFile = 4557430888798830399ULL;
+    static constexpr U64 notAFile = 18374403900871474942ULL;
+    static constexpr U64 notHFile = 9187201950435737471ULL;
+    static constexpr U64 notABFile = 18229723555195321596ULL;
+    static constexpr U64 notHGFile = 4557430888798830399ULL;
 
     // attack look up tables
-    U64 pawnAttacks[2][64];
-    U64 knightAttacks[64];
-    U64 queenAttacks[64];
-    U64 kingAttacks[64];
+    static U64 pawnAttacks[2][64];
+    static U64 knightAttacks[64];
+    static U64 queenAttacks[64];
+    static U64 kingAttacks[64];
 
     // Plain magic bitboard
     static U64 mBishopAttacks[64][512];
     static U64 mRookAttacks[64][4096];
 
-    struct SMagic
-    {
-        U64 mask;
-        U64 magic;
-    };
-
-    SMagic mBishopTbl[64];
-    SMagic mRookTbl[64];
+    static SMagic mBishopTbl[64];
+    static SMagic mRookTbl[64];
 
     // init bitboards
 

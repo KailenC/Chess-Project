@@ -1,6 +1,6 @@
 #include "../include/search.h"
 
-int Search::NegaMax(Board board, Evaluation e, int depth, int alpha, int beta)
+int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta)
 {
     if (depth == 0)
         return e.Evaluate(board);
@@ -8,23 +8,60 @@ int Search::NegaMax(Board board, Evaluation e, int depth, int alpha, int beta)
     MoveList list;
     board.GenerateMoves(list);
 
+    if (depth == rootDepth)
+    {
+        for (int i = 0; i < list.count; i++)
+        {
+            Board copy = board;
+            copy.MakeMove(list.moves[i]);
+            int us = copy.sideToMove ^ 1;
+            U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
+            if (!copy.IsSquareAttacked(GetLSBIndex(king)))
+            {
+                bestMove = list.moves[i];
+                break;
+            }
+        }
+    }
+
+    int legalMoves = 0;
+
     for (int i = 0; i < list.count; i++)
     {
-        board.MakeMove(list.moves[i]);
+        Board copy = board;
+        copy.MakeMove(list.moves[i]);
 
-        int us = board.sideToMove ^ 1;
+        int us = copy.sideToMove ^ 1;
 
         // check if king is in check
-        U64 king = (us == board.white) ? board.whiteKing : board.blackKing;
-        if (board.IsSquareAttacked(GetLSBIndex(king)))
+        U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
+        if (copy.IsSquareAttacked(GetLSBIndex(king)))
             continue;
 
-        int score = -NegaMax(board, e, depth - 1, -beta, -alpha);
+        legalMoves++;
+
+        int score = -NegaMax(copy, e, depth - 1, -beta, -alpha);
 
         if (score > alpha)
+        {
             alpha = score;
+            if (depth == rootDepth)
+                bestMove = list.moves[i];
+        }
         if (alpha >= beta)
             break;
     }
+
+    if (legalMoves == 0)
+    {
+        U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
+
+        board.sideToMove ^= 1;
+        bool inCheck = board.IsSquareAttacked(GetLSBIndex(king));
+        board.sideToMove ^= 1;
+
+        return inCheck ? -100000 + (rootDepth - depth) : 0;
+    }
+
     return alpha;
 }

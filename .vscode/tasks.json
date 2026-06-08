@@ -7,6 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
     "-g",
+    "-static",
     "${workspaceFolder}\\engine\\src\\main.cpp",
     "${workspaceFolder}\\engine\\src\\board.cpp",
     "${workspaceFolder}\\engine\\src\\search.cpp",

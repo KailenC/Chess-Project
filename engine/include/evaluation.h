@@ -9,10 +9,10 @@ public:
 private:
     enum
     {
-        pawn = 1,
-        knight = 3,
-        bishop = 3,
-        rook = 5,
-        queen = 9
+        pawn = 100,
+        knight = 300,
+        bishop = 300,
+        rook = 500,
+        queen = 900
     };
 };
