@@ -58,7 +58,7 @@ int main()
                     }
                 }
             }
-            board.PrintBitboard(board.AllOccupancy());
+            // board.PrintBitboard(board.AllOccupancy());
         }
         else if (input.substr(0, 2) == "go")
         {

@@ -22,8 +22,8 @@
     bit  23    : castling
 */
 #define encode_move(src, tgt, piece, promo, capture, dbl, ep, castle) \
-    (src) | (tgt << 6) | (piece << 12) | (promo << 16) |              \
-        (capture << 20) | (dbl << 21) | (ep << 22) | (castle << 23)
+    ((src) | ((tgt) << 6) | ((piece) << 12) | ((promo) << 16) |       \
+     ((capture) << 20) | ((dbl) << 21) | ((ep) << 22) | ((castle) << 23))
 
 #define get_move_source(m) (m & 0x3f)
 #define get_move_target(m) ((m >> 6) & 0x3f)
