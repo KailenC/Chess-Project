@@ -1,23 +1,19 @@
 #include "../include/search.h"
 
-int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta)
-{
+int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta) {
     if (depth == 0)
         return e.Evaluate(board);
 
     MoveList list;
     board.GenerateMoves(list);
 
-    if (depth == rootDepth)
-    {
-        for (int i = 0; i < list.count; i++)
-        {
+    if (depth == rootDepth) {
+        for (int i = 0; i < list.count; i++) {
             Board copy = board;
             copy.MakeMove(list.moves[i]);
             int us = copy.sideToMove ^ 1;
             U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
-            if (!copy.IsSquareAttacked(GetLSBIndex(king)))
-            {
+            if (!copy.IsSquareAttacked(GetLSBIndex(king))) {
                 bestMove = list.moves[i];
                 break;
             }
@@ -26,8 +22,7 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta)
 
     int legalMoves = 0;
 
-    for (int i = 0; i < list.count; i++)
-    {
+    for (int i = 0; i < list.count; i++) {
         Board copy = board;
         copy.MakeMove(list.moves[i]);
 
@@ -42,8 +37,7 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta)
 
         int score = -NegaMax(copy, e, depth - 1, -beta, -alpha);
 
-        if (score > alpha)
-        {
+        if (score > alpha) {
             alpha = score;
             if (depth == rootDepth)
                 bestMove = list.moves[i];
@@ -52,8 +46,7 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta)
             break;
     }
 
-    if (legalMoves == 0)
-    {
+    if (legalMoves == 0) {
         U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
 
         board.sideToMove ^= 1;

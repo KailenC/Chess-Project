@@ -1,7 +1,6 @@
 #include "../include/evaluation.h"
 
-int Evaluation::Evaluate(Board board)
-{
+int Evaluation::Evaluate(Board board) {
     // white
     int pawnScore = pawn * CountBits(board.whitePawns);
     int rookScore = rook * CountBits(board.whiteRooks);
@@ -16,6 +15,7 @@ int Evaluation::Evaluate(Board board)
     int bishopScore2 = bishop * CountBits(board.blackBishops);
     int queenScore2 = queen * CountBits(board.blackQueens);
 
-    int score = pawnScore + rookScore + knightScore + bishopScore + queenScore - (pawnScore2 + rookScore2 + knightScore2 + bishopScore2 + queenScore2);
+    int score = pawnScore + rookScore + knightScore + bishopScore + queenScore - (
+                    pawnScore2 + rookScore2 + knightScore2 + bishopScore2 + queenScore2);
     return (board.sideToMove == board.white) ? score : -score;
 }

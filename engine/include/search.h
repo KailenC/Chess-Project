@@ -2,8 +2,7 @@
 #include "board.h"
 #include "evaluation.h"
 
-class Search
-{
+class Search {
 public:
     int NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta);
 

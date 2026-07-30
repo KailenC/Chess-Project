@@ -16,7 +16,7 @@ int main()
     search.rootDepth = 5;
 
     std::string input;
-    bool run = true;
+    constexpr bool run = true;
     while (run && std::getline(std::cin, input))
     {
         if (input == "uci")
@@ -35,7 +35,7 @@ int main()
             board = Board();
             std::string inp = input;
             inp.erase(0, 24);
-            while (inp.size() != 0)
+            while (!inp.empty())
             {
                 // std::cout << inp << std::endl;
                 int src = (inp[0] - 'a') + (8 - (inp[1] - '0')) * 8;

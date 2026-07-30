@@ -34,8 +34,7 @@
 #define get_move_ep(m) ((m >> 22) & 0x1)
 #define get_move_castle(m) ((m >> 23) & 0x1)
 
-enum
-{
+enum {
     P,
     N,
     B,
@@ -52,15 +51,13 @@ enum
 
 typedef unsigned long long U64;
 
-struct MoveList
-{
+struct MoveList {
     int moves[256];
     int count = 0;
     void add(unsigned int move) { moves[count++] = move; }
 };
 
-struct SMagic
-{
+struct SMagic {
     U64 mask;
     U64 magic;
 };
@@ -105,12 +102,10 @@ static constexpr U64 rookMagics[64] = {
 };
 //clang-format on
 
-static inline int CountBits(U64 bitboard)
-{
+static inline int CountBits(U64 bitboard) {
     int bitCount = 0;
 
-     while (bitboard != 0)
-    {
+    while (bitboard != 0) {
         bitCount++;
 
         bitboard &= bitboard - 1;
@@ -119,39 +114,53 @@ static inline int CountBits(U64 bitboard)
     return bitCount;
 }
 
-static inline int GetLSBIndex(U64 bitboard)
-{
+static inline int GetLSBIndex(U64 bitboard) {
     return __builtin_ctzll(bitboard);
 }
 
-class Board
-{
+class Board {
 public:
     // functions
     void PrintBitboard(U64 bb);
+
     void InitJumperAttacks();
-    void GenerateMoves(MoveList& list);
+
+    void GenerateMoves(MoveList &list);
+
     void MakeMove(int move);
+
     void UnmakeMove(int move);
+
     U64 Occupany(int side);
+
     U64 AllOccupancy();
+
     U64 SetOccupancy(int index, int bitsInMask, U64 attackMask);
+
     bool IsSquareAttacked(int square);
 
     // attack masks
     U64 InitRookAttacks(int square, U64 blocker);
+
     U64 InitBishopAttacks(int square, U64 blocker);
 
     U64 MaskPawnAttacks(int square, int side);
+
     U64 MaskRookAttacks(int square);
+
     U64 MaskKnightAttacks(int square);
+
     U64 MaskBishopAttacks(int square);
+
     U64 MaskQueenAttacks(int square);
+
     U64 MaskKingAttacks(int square);
 
     // magic
     U64 bishopAttacks(U64 occ, int square);
+
     U64 rookAttacks(U64 occ, int square);
+
     void InitMagics();
 
     // enums

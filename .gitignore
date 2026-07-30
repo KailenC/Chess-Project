@@ -8,6 +8,21 @@ engine/build/
 *.o
 *.obj
 *.out
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.pdb
+
+# ---- CMake ----
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# ---- CLion / JetBrains ----
+.idea/
 
 # ---- Python ----
 __pycache__/
