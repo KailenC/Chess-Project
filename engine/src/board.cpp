@@ -1,5 +1,7 @@
 #include "../include/board.h"
 
+#include <iostream>
+
 U64 Board::mBishopAttacks[64][512];
 U64 Board::mRookAttacks[64][4096];
 U64 Board::pawnAttacks[2][64];
@@ -10,7 +12,7 @@ SMagic Board::mBishopTbl[64];
 SMagic Board::mRookTbl[64];
 
 void Board::PrintBitboard(U64 bb) {
-    std::cout << std::endl;
+    std::cout << '\n';
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
             if (!file) {
@@ -38,8 +40,8 @@ void Board::InitJumperAttacks() {
 }
 
 void Board::GenerateMoves(MoveList &list) {
-    U64 myPieces = Occupany(sideToMove);
-    U64 oppPieces = Occupany(sideToMove ^ 1);
+    U64 myPieces = Occupancy(sideToMove);
+    U64 oppPieces = Occupancy(sideToMove ^ 1);
     U64 allPieces = AllOccupancy();
 
     int PAWN = (sideToMove == white) ? P : p;
@@ -280,7 +282,7 @@ void Board::MakeMove(int move) {
 void Board::UnmakeMove(int move) {
 }
 
-U64 Board::Occupany(int side) {
+U64 Board::Occupancy(int side) const {
     if (!side) {
         return whitePawns | whiteRooks | whiteKnights | whiteBishops | whiteQueens | whiteKing;
     } else {
@@ -289,7 +291,7 @@ U64 Board::Occupany(int side) {
 }
 
 U64 Board::AllOccupancy() {
-    return Occupany(white) | Occupany(black);
+    return Occupancy(white) | Occupancy(black);
 }
 
 U64 Board::SetOccupancy(int index, int bitsInMask, U64 attackMask) {
@@ -342,7 +344,7 @@ bool Board::IsSquareAttacked(int square) {
 
     U64 queens = sideToMove == white ? whiteQueens : blackQueens;
     while (queens) {
-        int src = GetLSBIndex(queens);
+        const int src = GetLSBIndex(queens);
         pop_bit(queens, src);
         if ((bishopAttacks(AllOccupancy(), src) | rookAttacks(AllOccupancy(), src)) & (1ULL << square)) {
             return true;

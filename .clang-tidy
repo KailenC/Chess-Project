@@ -1,0 +1,12 @@
+Checks: >
+  -*,
+  bugprone-*,
+  performance-*,
+  cppcoreguidelines-pro-bounds-*,
+  -readability-magic-numbers,
+  -readability-identifier-naming,
+  -modernize-use-trailing-return-type
+
+CheckOptions:
+  - key: readability-magic-numbers.IgnoredIntegerValues
+    value: '1;2;3;4;6;8;16;32;64'

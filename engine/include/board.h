@@ -1,9 +1,4 @@
 #pragma once
-#include <iostream>
-#include <bitset>
-#include <string>
-#include <cstddef>
-#include <sstream>
 
 // board get/set/pop helpers
 #define get_bit(bitboard, square) (bitboard & (1ULL << square))
@@ -52,9 +47,9 @@ enum {
 typedef unsigned long long U64;
 
 struct MoveList {
-    int moves[256];
+    int moves[256]{};
     int count = 0;
-    void add(unsigned int move) { moves[count++] = move; }
+    void add(const unsigned int move) { moves[count++] = move; }
 };
 
 struct SMagic {
@@ -121,7 +116,7 @@ static inline int GetLSBIndex(U64 bitboard) {
 class Board {
 public:
     // functions
-    void PrintBitboard(U64 bb);
+    static void PrintBitboard(U64 bb);
 
     void InitJumperAttacks();
 
@@ -129,9 +124,9 @@ public:
 
     void MakeMove(int move);
 
-    void UnmakeMove(int move);
+    static void UnmakeMove(int move);
 
-    U64 Occupany(int side);
+    U64 Occupancy(int side) const;
 
     U64 AllOccupancy();
 
