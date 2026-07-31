@@ -1,6 +1,6 @@
 #include "../include/search.h"
 
-int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta) {
+int Search::NegaMax(Board &board, Evaluation e, const int depth, int alpha, const int beta) {
     if (depth == 0)
         return e.Evaluate(board);
 
@@ -11,8 +11,8 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta) 
         for (int i = 0; i < list.count; i++) {
             Board copy = board;
             copy.MakeMove(list.moves[i]);
-            int us = copy.sideToMove ^ 1;
-            U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
+            const int us = copy.sideToMove ^ 1;
+            const U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
             if (!copy.IsSquareAttacked(GetLSBIndex(king))) {
                 bestMove = list.moves[i];
                 break;
@@ -26,7 +26,7 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta) 
         Board copy = board;
         copy.MakeMove(list.moves[i]);
 
-        int us = copy.sideToMove ^ 1;
+        const int us = copy.sideToMove ^ 1;
 
         // check if king is in check
         U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
@@ -47,7 +47,7 @@ int Search::NegaMax(Board &board, Evaluation e, int depth, int alpha, int beta) 
     }
 
     if (legalMoves == 0) {
-        U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
+        const U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
 
         board.sideToMove ^= 1;
         bool inCheck = board.IsSquareAttacked(GetLSBIndex(king));

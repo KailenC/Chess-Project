@@ -3,7 +3,7 @@
 
 class Evaluation {
 public:
-    int Evaluate(Board board);
+    static int Evaluate(Board board);
 
 private:
     enum {
