@@ -50,7 +50,7 @@ int Search::NegaMax(Board &board, Evaluation e, const int depth, int alpha, cons
         const U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
 
         board.sideToMove ^= 1;
-        bool inCheck = board.IsSquareAttacked(GetLSBIndex(king));
+        const bool inCheck = board.IsSquareAttacked(GetLSBIndex(king));
         board.sideToMove ^= 1;
 
         return inCheck ? -100000 + (rootDepth - depth) : 0;

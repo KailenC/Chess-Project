@@ -47,7 +47,7 @@ enum {
 typedef unsigned long long U64;
 
 struct MoveList {
-    int moves[256]{};
+    unsigned int moves[256]{};
     int count = 0;
     void add(const unsigned int move) { moves[count++] = move; }
 };
