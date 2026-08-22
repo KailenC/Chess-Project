@@ -3,7 +3,7 @@
 
 class Evaluation {
 public:
-    static int Evaluate(Board board);
+    static int Evaluate(const Board &board);
 
 private:
     enum {
@@ -11,6 +11,7 @@ private:
         knight = 300,
         bishop = 300,
         rook = 500,
-        queen = 900
+        queen = 900,
+        king = 2000
     };
 };

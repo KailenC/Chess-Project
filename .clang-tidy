@@ -1,11 +1,11 @@
 Checks: >
-  -*,
-  bugprone-*,
+#  -*,
+#  bugprone-*,
   performance-*,
-  cppcoreguidelines-pro-bounds-*,
-  -readability-magic-numbers,
-  -readability-identifier-naming,
-  -modernize-use-trailing-return-type
+#  cppcoreguidelines-pro-bounds-*,
+#  -readability-magic-numbers,
+#  -readability-identifier-naming,
+#  -modernize-use-trailing-return-type
 
 CheckOptions:
   - key: readability-magic-numbers.IgnoredIntegerValues

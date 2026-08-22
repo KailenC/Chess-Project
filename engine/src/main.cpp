@@ -2,10 +2,10 @@
 #include "../include/evaluation.h"
 #include "../include/search.h"
 #include <iostream>
+#include <sstream>
 #include <string>
 
-int main()
-{
+int main() {
     Board board;
     Search search;
     Evaluation eval;
@@ -17,83 +17,130 @@ int main()
 
     std::string input;
     constexpr bool run = true;
-    while (run && std::getline(std::cin, input))
-    {
-        if (input == "uci")
-        {
+    while (run && std::getline(std::cin, input)) {
+        if (input == "uci") {
             std::cout << "id name KailenEngine\nid author kailen\nuciok\n";
             std::cout.flush();
-        }
-        else if (input == "isready")
-        {
+        } else if (input == "isready") {
             std::cout << "readyok\n";
             std::cout.flush();
-        }
-        else if (input.substr(0, 8) == "position")
-        {
-            // position startpos moves e2e4 e7e5
-            board = Board();
-            std::string inp = input;
-            inp.erase(0, 24);
-            while (!inp.empty())
-            {
-                // std::cout << inp << std::endl;
-                int src = (inp[0] - 'a') + (8 - (inp[1] - '0')) * 8;
-                int tgt = (inp[2] - 'a') + (8 - (inp[3] - '0')) * 8;
-                // std::cout << src << " " << tgt << std::endl;
-                inp.erase(0, 5);
-                // std::cout << inp << std::endl;
+        } else if (input.substr(0, 8) == "position") {
+            std::istringstream ss(input);
+            std::string token;
 
-                MoveList list;
-                board.GenerateMoves(list);
+            // "position"
+            ss >> token;
 
-                for (int i = 0; i < list.count; i++)
-                {
-                    if (get_move_source(list.moves[i]) == src && get_move_target(list.moves[i]) == tgt)
-                    {
-                        // board.PrintBitboard(board.AllOccupancy());
-                        board.MakeMove(list.moves[i]);
-                        // board.PrintBitboard(board.AllOccupancy());
-                        break;
+            // "startpos" or "fen"
+            ss >> token;
+
+            if (token == "startpos") {
+                board = Board();
+            } else if (token == "fen") {
+                // FEN consists of 6 fields
+                std::string fen;
+                std::string fenPart;
+
+                for (int i = 0; i < 6; i++) {
+                    ss >> fenPart;
+
+                    if (i > 0)
+                        fen += " ";
+
+                    fen += fenPart;
+                }
+
+                board.LoadFEN(fen);
+            }
+
+            // Check whether there are moves
+            ss >> token;
+
+            if (token == "moves") {
+                while (ss >> token) {
+                    // UCI move is normally:
+                    // e2e4
+                    // e7e8q
+                    // etc.
+
+                    if (token.length() < 4)
+                        continue;
+
+                    int src =
+                            (token[0] - 'a') +
+                            (8 - (token[1] - '0')) * 8;
+
+                    int tgt =
+                            (token[2] - 'a') +
+                            (8 - (token[3] - '0')) * 8;
+
+                    MoveList list;
+                    board.GenerateMoves(list);
+
+                    bool found = false;
+
+                    for (int i = 0; i < list.count; i++) {
+                        if (get_move_source(list.moves[i]) == src &&
+                            get_move_target(list.moves[i]) == tgt) {
+                            board.MakeMove(list.moves[i]);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        std::cerr << "ERROR: Could not find UCI move: "
+                                << token << std::endl;
                     }
                 }
             }
-            // board.PrintBitboard(board.AllOccupancy());
-        }
-        else if (input.substr(0, 2) == "go")
-        {
+        } else if (input.substr(0, 2) == "go") {
+            search.bestMove = 0;
             search.NegaMax(board, eval, 5, -10000, 10000);
-            int tgt = get_move_target(search.bestMove);
-            int src = get_move_source(search.bestMove);
+            int move = search.bestMove;
+
+            int src = get_move_source(move);
+            int tgt = get_move_target(move);
+            int promo = get_move_promo(move);
+
             std::cout << "bestmove ";
-            std::cout << (char)('a' + src % 8) << (8 - src / 8);
-            std::cout << (char)('a' + tgt % 8) << (8 - tgt / 8) << "\n";
-        }
-        else if (input == "quit")
-        {
+
+            std::cout << static_cast<char>('a' + src % 8)
+                      << (8 - src / 8);
+
+            std::cout << static_cast<char>('a' + tgt % 8)
+                      << (8 - tgt / 8);
+
+            if (promo != 0) {
+                switch (promo) {
+                    case N:
+                    case n:
+                        std::cout << 'n';
+                        break;
+
+                    case B:
+                    case b:
+                        std::cout << 'b';
+                        break;
+
+                    case R:
+                    case r:
+                        std::cout << 'r';
+                        break;
+
+                    case Q:
+                    case q:
+                        std::cout << 'q';
+                        break;
+                }
+            }
+
+            std::cout << "\n";
+        } else if (input == "quit") {
             break;
-        }
-        else if (input == "ucinewgame")
-        {
+        } else if (input == "ucinewgame") {
             board = Board();
         }
     }
-
-    /*
-    // python interface
-    bool doInterface = false;
-    std::string input;
-
-    if (doInterface)
-    {
-        while (std::getline(std::cin, input))
-        {
-            if (input == "hello")
-            {
-                std::cout << "Hey" << std::endl;
-            }
-        }
-    }
-    */
     return 0;
 }
