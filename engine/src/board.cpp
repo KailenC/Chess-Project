@@ -752,28 +752,13 @@ bool Board::IsAttackedByOpponent(int square) {
     return attacked;
 }
 
-static int pieceIndex(char piece) {
-    switch (piece) {
-        case 'P': return 0;
-        case 'N': return 1;
-        case 'B': return 2;
-        case 'R': return 3;
-        case 'Q': return 4;
-        case 'K': return 5;
-        case 'p': return 6;
-        case 'n': return 7;
-        case 'b': return 8;
-        case 'r': return 9;
-        case 'q': return 10;
-        case 'k': return 11;
-        default: return -1;
-    }
-}
+
 
 void Board::LoadFEN(const std::string &fen) {
     int index = 0;
 
     ClearBoard();
+    ply = 0;
 
     U64 *bb[12] = {
         &whitePawns, &whiteKnights, &whiteBishops,

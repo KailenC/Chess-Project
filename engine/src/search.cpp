@@ -1,8 +1,15 @@
 #include "../include/search.h"
 
-int Search::NegaMax(Board &board, Evaluation e, const int depth, int alpha, const int beta) {
+int Search::NegaMax(Board board, const int depth, int alpha, const int beta) {
+    if (stopFlag && stopFlag->load(std::memory_order_relaxed)) {
+        aborted = true;
+        return 0;
+    }
+
     if (depth == 0)
-        return e.Evaluate(board);
+        return Evaluation::Evaluate(board);
+
+    if (aborted) return 0;
 
     MoveList list;
     board.GenerateMoves(list);
@@ -35,7 +42,9 @@ int Search::NegaMax(Board &board, Evaluation e, const int depth, int alpha, cons
 
         legalMoves++;
 
-        int score = -NegaMax(copy, e, depth - 1, -beta, -alpha);
+        const int score = -NegaMax(copy, depth - 1, -beta, -alpha);
+
+        if (aborted) return 0;
 
         if (score > alpha) {
             alpha = score;
@@ -47,7 +56,7 @@ int Search::NegaMax(Board &board, Evaluation e, const int depth, int alpha, cons
     }
 
     if (legalMoves == 0) {
-        const U64 king = (board.sideToMove == board.white) ? board.whiteKing : board.blackKing;
+        const U64 king = (board.sideToMove == Board::white) ? board.whiteKing : board.blackKing;
 
         board.sideToMove ^= 1;
         const bool inCheck = board.IsSquareAttacked(GetLSBIndex(king));

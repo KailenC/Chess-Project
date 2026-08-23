@@ -42,34 +42,3 @@ if(BUILD_TESTS)
     include(Catch)
     catch_discover_tests(tests)
 endif()
-
-# --- Snapshot: archive the current build for future engine-vs-engine testing ---
-find_package(Git QUIET)
-if(GIT_FOUND)
-    execute_process(
-            COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            OUTPUT_VARIABLE GIT_HASH
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            ERROR_QUIET
-    )
-endif()
-if(NOT GIT_HASH)
-    set(GIT_HASH "nogit")
-endif()
-
-set(VERSION_TAG "" CACHE STRING "Optional label for a snapshot (e.g. v1-negamax). Defaults to git hash.")
-if(VERSION_TAG)
-    set(SNAPSHOT_NAME "chess_engine_${VERSION_TAG}")
-else()
-    set(SNAPSHOT_NAME "chess_engine_${GIT_HASH}")
-endif()
-
-add_custom_target(snapshot
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_SOURCE_DIR}/bin/versions"
-        COMMAND ${CMAKE_COMMAND} -E copy
-        "$<TARGET_FILE:chess_engine>"
-        "${CMAKE_SOURCE_DIR}/bin/versions/${SNAPSHOT_NAME}$<TARGET_FILE_SUFFIX:chess_engine>"
-        DEPENDS chess_engine
-        COMMENT "Archiving current chess_engine build to bin/versions/"
-)

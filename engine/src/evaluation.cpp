@@ -21,3 +21,5 @@ int Evaluation::Evaluate(const Board &board) {
                     pawnScore2 + rookScore2 + knightScore2 + bishopScore2 + queenScore2 + kingScore2);
     return (board.sideToMove == Board::white) ? score : -score;
 }
+
+// https://chessprogramming.org/Simplified_Evaluation_Function

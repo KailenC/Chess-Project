@@ -60,8 +60,26 @@ struct SMagic {
 
 inline std::string SquareToString(int square) {
     std::string files = "abcdefgh";
-    std::string ranks = "87654321";  // rank 0 = row 8 in your square numbering
+    std::string ranks = "87654321"; // rank 0 = row 8 in your square numbering
     return std::string(1, files[square % 8]) + ranks[square / 8];
+}
+
+inline int pieceIndex(char piece) {
+    switch (piece) {
+        case 'P': return 0;
+        case 'N': return 1;
+        case 'B': return 2;
+        case 'R': return 3;
+        case 'Q': return 4;
+        case 'K': return 5;
+        case 'p': return 6;
+        case 'n': return 7;
+        case 'b': return 8;
+        case 'r': return 9;
+        case 'q': return 10;
+        case 'k': return 11;
+        default: return -1;
+    }
 }
 
 inline std::string MoveToString(int move) {
@@ -75,10 +93,18 @@ inline std::string MoveToString(int move) {
         // map piece enum back to a letter; only N/B/R/Q are valid promo targets
         char promoChar = ' ';
         switch (promo) {
-            case N: case n: promoChar = 'n'; break;
-            case B: case b: promoChar = 'b'; break;
-            case R: case r: promoChar = 'r'; break;
-            case Q: case q: promoChar = 'q'; break;
+            case N:
+            case n: promoChar = 'n';
+                break;
+            case B:
+            case b: promoChar = 'b';
+                break;
+            case R:
+            case r: promoChar = 'r';
+                break;
+            case Q:
+            case q: promoChar = 'q';
+                break;
             default: break;
         }
         s += promoChar;
@@ -264,8 +290,12 @@ public:
     int sideToMove = white;
 
     U64 Perft(int depth);
+
     void Divide(int depth);
+
     bool IsAttackedByOpponent(int square);
-    void LoadFEN(const std::string& fen);
+
+    void LoadFEN(const std::string &fen);
+
     void ClearBoard();
 };
