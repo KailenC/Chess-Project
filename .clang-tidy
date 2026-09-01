@@ -1,12 +1,23 @@
 Checks: >
-#  -*,
-#  bugprone-*,
+  -*,
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  misc-*,
+  modernize-use-nullptr,
+  modernize-use-override,
+  modernize-use-default-member-init,
   performance-*,
-#  cppcoreguidelines-pro-bounds-*,
-#  -readability-magic-numbers,
-#  -readability-identifier-naming,
-#  -modernize-use-trailing-return-type
+  readability-else-after-return,
+  readability-redundant-control-flow,
+  readability-simplify-boolean-expr
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '^(engine/.*|tests/.*)$'
 
 CheckOptions:
-  - key: readability-magic-numbers.IgnoredIntegerValues
-    value: '1;2;3;4;6;8;16;32;64'
+  - key: cppcoreguidelines-narrowing-conversions.PedanticMode
+    value: 'false'
+  - key: cert-oop57-cpp.WarnOnLargeObjects
+    value: 'false'

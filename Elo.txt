@@ -12,3 +12,11 @@ cutechess-cli \
 -concurrency 10
 
 Version 1(v1_Negamax): vs stockfish 1320 2 games and 1500 1 game : approx -> 1280 elo
+
+cutechess-cli \
+-engine cmd="<repo-root>/bin/versions/chess_engine_v0_negamax_baseline" name=KailenEngine0 \
+-engine cmd="<repo-root>/bin/versions/chess_engine_v1_negamax" name=KailenEngine1 \
+-each proto=uci tc=60+0.1 \
+-rounds 50 \
+-repeat \
+-concurrency 10

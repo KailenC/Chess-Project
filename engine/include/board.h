@@ -28,6 +28,7 @@
 #define get_move_double(m) ((m >> 21) & 0x1)
 #define get_move_ep(m) ((m >> 22) & 0x1)
 #define get_move_castle(m) ((m >> 23) & 0x1)
+#include <array>
 #include <string>
 
 enum piece {
@@ -48,9 +49,10 @@ enum piece {
 typedef unsigned long long U64;
 
 struct MoveList {
-    unsigned int moves[256]{};
+    //U64 moves[256]{};
+    std::array<U64, 256> moves;
     int count = 0;
-    void add(const unsigned int move) { moves[count++] = move; }
+    void add(const U64 move) { moves[count++] = move; }
 };
 
 struct SMagic {
@@ -59,8 +61,8 @@ struct SMagic {
 };
 
 inline std::string SquareToString(int square) {
-    std::string files = "abcdefgh";
-    std::string ranks = "87654321"; // rank 0 = row 8 in your square numbering
+    const std::string files = "abcdefgh";
+    const std::string ranks = "87654321"; // rank 0 = row 8 in your square numbering
     return std::string(1, files[square % 8]) + ranks[square / 8];
 }
 
@@ -82,10 +84,10 @@ inline int pieceIndex(char piece) {
     }
 }
 
-inline std::string MoveToString(int move) {
-    int src = get_move_source(move);
-    int tgt = get_move_target(move);
-    int promo = get_move_promo(move);
+inline std::string MoveToString(const int move) {
+    const int src = get_move_source(move);
+    const int tgt = get_move_target(move);
+    const int promo = get_move_promo(move);
 
     std::string s = SquareToString(src) + SquareToString(tgt);
 
@@ -113,7 +115,7 @@ inline std::string MoveToString(int move) {
     return s;
 }
 
-static constexpr U64 bishopMagics[64] = {
+static constexpr std::array<U64, 64> bishopMagics = {
     0x89a1121896040240ULL, 0x2004844802002010ULL, 0x2068080051921000ULL, 0x62880a0220200808ULL,
     0x4042004000000ULL, 0x100822020200011ULL, 0xc00444222012000aULL, 0x28808801216001ULL,
     0x400492088408100ULL, 0x201c401040c0084ULL, 0x840800910a0010ULL, 0x82080240060ULL,
@@ -132,7 +134,7 @@ static constexpr U64 bishopMagics[64] = {
     0x1000042304105ULL, 0x10008830412a00ULL, 0x2520081090008908ULL, 0x40102000a0a60140ULL,
 };
 
-static constexpr U64 rookMagics[64] = {
+static constexpr std::array<U64, 64> rookMagics = {
     0x8a80104000800020ULL, 0x140002000100040ULL, 0x2801880a0017001ULL, 0x100081001000420ULL,
     0x200020010080420ULL, 0x3001c0002010008ULL, 0x8480008002000100ULL, 0x2080088004402900ULL,
     0x800098204000ULL, 0x2024401000200040ULL, 0x100802000801000ULL, 0x120800800801000ULL,
@@ -214,8 +216,6 @@ public:
 
     // enums
 
-    // clang-format off
-
     enum squares{
         a8, b8, c8, d8, e8, f8, g8, h8,
         a7, b7, c7, d7, e7, f7, g7, h7,
@@ -241,8 +241,6 @@ public:
         "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
         "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"
     */
-
-    // clang-format on
 
     // not-file masks
     static constexpr U64 notAFile = 18374403900871474942ULL;

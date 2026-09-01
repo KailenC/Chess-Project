@@ -36,7 +36,7 @@ int Search::NegaMax(Board board, const int depth, int alpha, const int beta) {
         const int us = copy.sideToMove ^ 1;
 
         // check if king is in check
-        U64 king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
+        U64 const king = (us == copy.white) ? copy.whiteKing : copy.blackKing;
         if (copy.IsSquareAttacked(GetLSBIndex(king)))
             continue;
 

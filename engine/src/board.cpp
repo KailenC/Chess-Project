@@ -74,7 +74,7 @@ void Board::GenerateMoves(MoveList &list) {
 
                     // move forward 2
                     if (src >= a2 && src <= h2) {
-                        int target2 = src - 16;
+                        const int target2 = src - 16;
                         if (!get_bit(allPieces, target2)) {
                             list.add(encode_move(src, target2, PAWN, 0, 0, 1, 0, 0));
                         }
@@ -249,7 +249,7 @@ void Board::GenerateMoves(MoveList &list) {
     }
 }
 
-void Board::MakeMove(int move) {
+void Board::MakeMove(const int move) {
     const int src = get_move_source(move);
     const int tgt = get_move_target(move);
     const int piece = get_move_piece(move);
